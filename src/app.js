@@ -1,8 +1,9 @@
+import "./env.js";
+
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
-import session from "express-session";
-import MongoStore from "connect-mongo";
+import cookieParser from "cookie-parser";       
 import adminRoutes from "./routes/adminRoutes.js";
 import propertyRoutes from "./routes/propertyRoutes.js";
 import projectRoutes from "./routes/projectRoutes.js";
@@ -20,26 +21,8 @@ app.use(
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());                         
 
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET || "rentalking_secret",
-    resave: false,
-    saveUninitialized: false,
-    rolling: true,
-
-    store: MongoStore.create({
-      mongoUrl: process.env.MONGODB_URI,
-    }),
-
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 5,
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-    },
-  })
-);
 
 app.use("/api/admin", adminRoutes);
 app.use("/api/property", propertyRoutes);
@@ -47,10 +30,7 @@ app.use("/api/project", projectRoutes);
 app.use("/api/testimonial", testimonialRoutes);
 
 app.get("/", (req, res) => {
-  res.json({
-    success: true,
-    message: "RentalKing Backend Running 🚀",
-  });
+  res.json({ success: true, message: "RentalKing Backend Running 🚀" });
 });
 
 export default app;
