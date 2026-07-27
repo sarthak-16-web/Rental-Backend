@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   session({
-    secret: process.env.SESSION_SECRET || "rentalking_secret",
+    secret: process.env.SESSION_SECRET ,
     resave: false,
     saveUninitialized: false,
     rolling: true,
