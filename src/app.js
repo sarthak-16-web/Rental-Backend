@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import session from "express-session";
-
+import MongoStore from "connect-mongo";
 import adminRoutes from "./routes/adminRoutes.js";
 import propertyRoutes from "./routes/propertyRoutes.js";
 import projectRoutes from "./routes/projectRoutes.js";
@@ -23,12 +23,17 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   session({
-    secret: process.env.SESSION_SECRET ,
+    secret: process.env.SESSION_SECRET || "rentalking_secret",
     resave: false,
     saveUninitialized: false,
     rolling: true,
+
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGODB_URI,
+    }),
+
     cookie: {
-      maxAge: 1000 * 60 * 60 * 5, // 5 hours
+      maxAge: 1000 * 60 * 60 * 5,
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
