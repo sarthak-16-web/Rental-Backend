@@ -5,6 +5,7 @@ const propertySchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
+      trim: true,
     },
 
     price: {
@@ -20,36 +21,41 @@ const propertySchema = new mongoose.Schema(
     location: {
       type: String,
       required: true,
+      trim: true,
     },
 
     address: {
       type: String,
-      required: true,
+      trim: true,
     },
 
     category: {
       type: String,
+      enum: ["Apartment", "Villa", "House", "Plot", "Commercial"],
       required: true,
     },
 
-    image: {
+    coverImage: {
       type: String,
       required: true,
     },
 
+    images: [
+      {
+        type: String,
+      },
+    ],
+
     beds: {
       type: Number,
-      required: true,
     },
 
     baths: {
       type: Number,
-      required: true,
     },
 
     sqft: {
       type: String,
-      required: true,
     },
 
     description: {
