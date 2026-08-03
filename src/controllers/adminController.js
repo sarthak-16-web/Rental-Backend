@@ -5,7 +5,7 @@ import { generateAccessToken, generateRefreshToken } from "../utils/generateToke
 const cookieOptions = {
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
-  sameSite: "lax",
+  sameSite: "None",
 };
 
 export const loginAdmin = async (req, res) => {
