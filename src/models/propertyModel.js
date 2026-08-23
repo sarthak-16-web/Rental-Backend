@@ -19,6 +19,14 @@ const propertySchema = new mongoose.Schema(
       required: true,
     },
 
+    priceFrequency: {
+      type: String,
+      enum: propertyMeta.priceFrequencies,
+      required: function () {
+        return propertyMeta.priceFrequencyStatuses.includes(this.status);
+      },
+    },
+
     location: {
       type: String,
       required: true,

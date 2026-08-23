@@ -84,6 +84,8 @@ export const getPropertySchema = async (req, res) => {
             statuses: propertyMeta.statuses,
             furnishing: propertyMeta.furnishing,
             bhk: propertyMeta.bhk,
+            priceFrequencies: propertyMeta.priceFrequencies,
+            priceFrequencyStatuses: propertyMeta.priceFrequencyStatuses,
             statusesByCategory: propertyMeta.statusesByCategory,
             furnishingByCategory: propertyMeta.furnishingByCategory,
             bhkByCategory: propertyMeta.bhkByCategory,

@@ -3,6 +3,9 @@ export const propertyMeta = {
   statuses: ["For Rent", "For Sale", "Co Working", "Pre Leased"],
   furnishing: ["Unfurnished", "Semi-Furnished", "Fully Furnished"],
   bhk: ["1 BHK", "2 BHK", "3 BHK", "4 BHK", "5+ BHK"],
+  priceFrequencies: ["Monthly", "Annual"],
+  // Statuses that bill recurringly, so they need a price frequency.
+  priceFrequencyStatuses: ["For Rent", "Co Working"],
   statusesByCategory: {
     Apartment: ["For Rent", "For Sale", "Pre Leased"],
     "House/Villa": ["For Rent", "For Sale", "Pre Leased"],
