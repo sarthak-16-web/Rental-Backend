@@ -9,11 +9,6 @@ const propertySchema = new mongoose.Schema(
       trim: true,
     },
 
-    price: {
-      type: String,
-      required: true,
-    },
-
     priceNumeric: {
       type: Number,
       required: true,
@@ -64,6 +59,7 @@ const propertySchema = new mongoose.Schema(
       },
       validate: {
         validator(value) {
+          if (value == null) return true; // absence is `required`'s job, not this validator's
           return propertyMeta.furnishingByCategory[this.category].includes(value);
         },
         message: (props) => `Furnishing "${props.value}" is not valid for this category.`,
@@ -78,6 +74,7 @@ const propertySchema = new mongoose.Schema(
       },
       validate: {
         validator(value) {
+          if (value == null) return true; // absence is `required`'s job, not this validator's
           return propertyMeta.bhkByCategory[this.category].includes(value);
         },
         message: (props) => `BHK "${props.value}" is not valid for this category.`,
