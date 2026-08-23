@@ -1,5 +1,5 @@
 export const propertyMeta = {
-  categories: ["Apartment", "House/Villa", "Plot", "Commercial", "Warehouse"],
+  categories: ["Commercial", "Warehouse", "Apartment", "House/Villa", "Plot"],
   statuses: ["For Rent", "For Sale", "Co Working", "Pre Leased"],
   furnishing: ["Unfurnished", "Semi-Furnished", "Fully Furnished"],
   bhk: ["1 BHK", "2 BHK", "3 BHK", "4 BHK", "5+ BHK"],
