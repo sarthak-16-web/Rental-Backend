@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { propertyMeta } from "../config/propertyMeta.js";
 
 const propertySchema = new mongoose.Schema(
   {
@@ -31,8 +32,48 @@ const propertySchema = new mongoose.Schema(
 
     category: {
       type: String,
-      enum: ["Apartment", "Villa", "House", "Plot", "Commercial"],
+      enum: propertyMeta.categories,
       required: true,
+    },
+
+    status: {
+      type: String,
+      enum: propertyMeta.statuses,
+      required: true,
+      validate: {
+        validator(value) {
+          return propertyMeta.statusesByCategory[this.category].includes(value);
+        },
+        message: (props) => `Status "${props.value}" is not valid for this category.`,
+      },
+    },
+
+    furnishing: {
+      type: String,
+      enum: propertyMeta.furnishing,
+      required: function () {
+        return propertyMeta.furnishingByCategory[this.category].length > 0;
+      },
+      validate: {
+        validator(value) {
+          return propertyMeta.furnishingByCategory[this.category].includes(value);
+        },
+        message: (props) => `Furnishing "${props.value}" is not valid for this category.`,
+      },
+    },
+
+    bhk: {
+      type: String,
+      enum: propertyMeta.bhk,
+      required: function () {
+        return propertyMeta.bhkByCategory[this.category].length > 0;
+      },
+      validate: {
+        validator(value) {
+          return propertyMeta.bhkByCategory[this.category].includes(value);
+        },
+        message: (props) => `BHK "${props.value}" is not valid for this category.`,
+      },
     },
 
     coverImage: {

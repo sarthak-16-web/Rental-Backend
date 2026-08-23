@@ -1,4 +1,5 @@
 import Property from "../models/propertyModel.js";
+import { propertyMeta } from "../config/propertyMeta.js";
 
 // Add Property
 export const addProperty = async (req, res) => {
@@ -72,6 +73,30 @@ export const deleteProperty = async (req, res) => {
       message: error.message,
     });
   }
+};
+
+export const getPropertySchema = async (req, res) => {
+    try {
+
+        res.status(200).json({
+            success: true,
+            categories: propertyMeta.categories,
+            statuses: propertyMeta.statuses,
+            furnishing: propertyMeta.furnishing,
+            bhk: propertyMeta.bhk,
+            statusesByCategory: propertyMeta.statusesByCategory,
+            furnishingByCategory: propertyMeta.furnishingByCategory,
+            bhkByCategory: propertyMeta.bhkByCategory,
+        });
+
+    } catch (error) {
+
+        res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+
+    }
 };
 
 export const getAllProperties = async (req, res) => {

@@ -10,21 +10,21 @@ const cookieOptions = {
 
 export const loginAdmin = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
-    if (!email || !password) {
+    if (!username || !password) {
       return res.status(400).json({
         success: false,
-        message: "Email and password are required.",
+        message: "Username and password are required.",
       });
     }
 
-    const admin = await Admin.findOne({ email });
+    const admin = await Admin.findOne({ username });
 
     if (!admin) {
       return res.status(401).json({
         success: false,
-        message: "Invalid email or password.",
+        message: "Invalid username or password.",
       });
     }
 
@@ -54,7 +54,7 @@ export const loginAdmin = async (req, res) => {
       message: "Login successful.",
       admin: {
         id: admin._id,
-        email: admin.email,
+        username: admin.username,
       },
     });
   } catch (error) {
@@ -74,48 +74,6 @@ export const logoutAdmin = (req, res) => {
     success: true,
     message: "Logged out successfully",
   });
-};
-
-export const registerAdmin = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-      return res.status(400).json({
-        success: false,
-        message: "Email and password are required.",
-      });
-    }
-
-    const existingAdmin = await Admin.findOne({ email });
-
-    if (existingAdmin) {
-      return res.status(400).json({
-        success: false,
-        message: "Admin already exists.",
-      });
-    }
-
-    const admin = await Admin.create({
-      email,
-      password, // raw password — pre-save hook in Admin.js hashes it automatically
-    });
-
-    res.status(201).json({
-      success: true,
-      message: "Admin created successfully.",
-      admin: {
-        id: admin._id,
-        email: admin.email,
-      },
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      success: false,
-      message: "Internal Server Error",
-    });
-  }
 };
 
 export const refreshAccessToken = (req, res) => {
