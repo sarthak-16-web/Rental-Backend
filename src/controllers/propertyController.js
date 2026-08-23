@@ -24,10 +24,7 @@ export const editProperty = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const property = await Property.findByIdAndUpdate(id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    const property = await Property.findById(id);
 
     if (!property) {
       return res.status(404).json({
@@ -35,6 +32,9 @@ export const editProperty = async (req, res) => {
         message: "Property not found",
       });
     }
+
+    Object.assign(property, req.body);
+    await property.save();
 
     res.status(200).json({
       success: true,
