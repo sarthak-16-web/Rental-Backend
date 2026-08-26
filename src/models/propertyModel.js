@@ -94,10 +94,35 @@ const propertySchema = new mongoose.Schema(
 
     beds: {
       type: Number,
+      required: function () {
+        return propertyMeta.bhkByCategory[this.category].length > 0;
+      },
+      validate: {
+        validator(value) {
+          if (value == null) return true; // absence is `required`'s job, not this validator's
+          const range = propertyMeta.bedsRangeByBhk[this.bhk];
+          if (!range) return false; // category doesn't support BHK, or bhk unset
+          if (value < range.min) return false;
+          if (range.max != null && value > range.max) return false;
+          return true;
+        },
+        message: (props) => `Beds "${props.value}" is not valid for this BHK.`,
+      },
     },
 
     baths: {
       type: Number,
+      min: 1,
+      required: function () {
+        return propertyMeta.bhkByCategory[this.category].length > 0;
+      },
+      validate: {
+        validator(value) {
+          if (value == null) return true; // absence is `required`'s job, not this validator's
+          return propertyMeta.bhkByCategory[this.category].length > 0;
+        },
+        message: () => "Baths is not valid for this category.",
+      },
     },
 
     sqft: {

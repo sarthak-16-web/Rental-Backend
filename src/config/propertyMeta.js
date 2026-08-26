@@ -27,4 +27,14 @@ export const propertyMeta = {
     Commercial: [],
     Warehouse: [],
   },
+  // The valid beds range for each BHK value. min === max means beds is a
+  // single fixed number (derived from BHK, not independently chosen);
+  // max: null means "no upper bound" (only "5+ BHK" today).
+  bedsRangeByBhk: {
+    "1 BHK": { min: 1, max: 1 },
+    "2 BHK": { min: 2, max: 2 },
+    "3 BHK": { min: 3, max: 3 },
+    "4 BHK": { min: 4, max: 4 },
+    "5+ BHK": { min: 5, max: null },
+  },
 };

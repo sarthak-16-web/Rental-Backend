@@ -89,6 +89,7 @@ export const getPropertySchema = async (req, res) => {
             statusesByCategory: propertyMeta.statusesByCategory,
             furnishingByCategory: propertyMeta.furnishingByCategory,
             bhkByCategory: propertyMeta.bhkByCategory,
+            bedsRangeByBhk: propertyMeta.bedsRangeByBhk,
         });
 
     } catch (error) {
