@@ -1,15 +1,22 @@
 import express from "express";
 import {
   addTestimonial,
+  submitTestimonial,
   editTestimonial,
   deleteTestimonial,
-  getAllTestimonials
+  getAllTestimonials,
+  getApprovedTestimonials,
 } from "../controllers/testinomalController.js";
+import { requireAdmin } from "../middleware/requireAdmin.js";
 
 const router = express.Router();
 
-router.post("/add", addTestimonial);
-router.put("/edit/:id", editTestimonial);
-router.delete("/delete/:id", deleteTestimonial);
-router.get("/get-all", getAllTestimonials);
+router.get("/get-approved", getApprovedTestimonials);
+router.post("/submit", submitTestimonial);
+
+router.get("/get-all", requireAdmin, getAllTestimonials);
+router.post("/add", requireAdmin, addTestimonial);
+router.put("/edit/:id", requireAdmin, editTestimonial);
+router.delete("/delete/:id", requireAdmin, deleteTestimonial);
+
 export default router;

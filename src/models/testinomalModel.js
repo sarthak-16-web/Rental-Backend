@@ -5,23 +5,20 @@ const testimonialSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
+      trim: true,
+      maxlength: 60,
     },
 
-    property: {
+    review: {
       type: String,
       required: true,
+      trim: true,
+      maxlength: 200,
     },
 
-    rating: {
-      type: Number,
-      required: true,
-      min: 1,
-      max: 5,
-    },
-
-    text: {
-      type: String,
-      required: true,
+    approved: {
+      type: Boolean,
+      default: false,
     },
   },
   {
