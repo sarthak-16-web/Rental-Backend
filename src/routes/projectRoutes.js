@@ -3,10 +3,12 @@ import {
   addProject,
   editProject,
   deleteProject,
-  getAllProjects
+  getAllProjects,
+  getProjectSchema
 } from "../controllers/projectController.js";
 
 const router = express.Router();
+router.get("/schema", getProjectSchema);
 router.get("/get-all", getAllProjects);
 
 router.post("/add", addProject);

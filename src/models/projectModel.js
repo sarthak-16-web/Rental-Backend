@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { projectMeta } from "../config/projectMeta.js";
 
 const projectSchema = new mongoose.Schema(
   {
@@ -7,24 +8,23 @@ const projectSchema = new mongoose.Schema(
       required: true,
     },
 
-    location: {
-      type: String,
+    categories: {
+      type: [String],
+      enum: projectMeta.categories,
       required: true,
+      validate: {
+        validator: (arr) => Array.isArray(arr) && arr.length > 0,
+        message: "At least one category is required.",
+      },
     },
 
-    completion: {
-      type: String,
+    images: {
+      type: [String],
       required: true,
-    },
-
-    units: {
-      type: Number,
-      required: true,
-    },
-
-    image: {
-      type: String,
-      required: true,
+      validate: {
+        validator: (arr) => Array.isArray(arr) && arr.length > 0,
+        message: "At least one image is required.",
+      },
     },
 
     description: {

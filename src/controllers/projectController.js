@@ -1,4 +1,19 @@
 import Project from "../models/projectModel.js";
+import { projectMeta } from "../config/projectMeta.js";
+
+export const getProjectSchema = async (req, res) => {
+  try {
+    res.status(200).json({
+      success: true,
+      categories: projectMeta.categories,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 
 // Add Project
 export const addProject = async (req, res) => {
@@ -23,10 +38,7 @@ export const editProject = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const project = await Project.findByIdAndUpdate(id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    const project = await Project.findById(id);
 
     if (!project) {
       return res.status(404).json({
@@ -34,6 +46,9 @@ export const editProject = async (req, res) => {
         message: "Project not found",
       });
     }
+
+    Object.assign(project, req.body);
+    await project.save();
 
     res.status(200).json({
       success: true,
