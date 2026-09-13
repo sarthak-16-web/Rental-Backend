@@ -3,7 +3,6 @@ import {
   loginAdmin,
   logoutAdmin,
   checkAdminSession,
-  refreshAccessToken,
 } from "../controllers/adminController.js";
 import { requireAdmin } from "../middleware/requireAdmin.js";
 
@@ -11,7 +10,6 @@ const router = express.Router();
 
 router.post("/login", loginAdmin);
 router.post("/logout", logoutAdmin);
-router.post("/refresh", refreshAccessToken);
 router.get("/me", requireAdmin, checkAdminSession);
 
 router.get("/dashboard", requireAdmin, (req, res) => {

@@ -1,11 +1,16 @@
 import Admin from "../models/Admin.js";
-import jwt from "jsonwebtoken";
-import { generateAccessToken, generateRefreshToken } from "../utils/generateTokens.js";
+import { generateAccessToken } from "../utils/generateTokens.js";
 
+// SameSite=None requires Secure, or every modern browser silently drops the
+// cookie - which is exactly what was happening in local dev (NODE_ENV isn't
+// "production", so secure was false while sameSite stayed "None"). Only use
+// the cross-site-capable None+Secure pair in production; Lax works fine for
+// local dev over plain HTTP.
+const isProd = process.env.NODE_ENV === "production";
 const cookieOptions = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: "None",
+  secure: isProd,
+  sameSite: isProd ? "None" : "Lax",
 };
 
 export const loginAdmin = async (req, res) => {
@@ -38,13 +43,8 @@ export const loginAdmin = async (req, res) => {
     }
 
     const accessToken = generateAccessToken(admin);
-    const refreshToken = generateRefreshToken(admin);
 
     res.cookie("accessToken", accessToken, {
-      ...cookieOptions,
-      maxAge: 1000 * 60 * 15, // 15 min
-    });
-    res.cookie("refreshToken", refreshToken, {
       ...cookieOptions,
       maxAge: 1000 * 60 * 60 * 5, // 5 hours
     });
@@ -68,39 +68,11 @@ export const loginAdmin = async (req, res) => {
 
 export const logoutAdmin = (req, res) => {
   res.clearCookie("accessToken", cookieOptions);
-  res.clearCookie("refreshToken", cookieOptions);
 
   res.json({
     success: true,
     message: "Logged out successfully",
   });
-};
-
-export const refreshAccessToken = (req, res) => {
-  const token = req.cookies.refreshToken;
-
-  if (!token) {
-    return res.status(401).json({ success: false, message: "No refresh token" });
-  }
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
-
-    const newAccessToken = jwt.sign(
-      { id: decoded.id },
-      process.env.JWT_ACCESS_SECRET,
-      { expiresIn: "15m" }
-    );
-
-    res.cookie("accessToken", newAccessToken, {
-      ...cookieOptions,
-      maxAge: 1000 * 60 * 15,
-    });
-
-    res.json({ success: true, message: "Access token refreshed" });
-  } catch (err) {
-    return res.status(401).json({ success: false, message: "Invalid or expired refresh token" });
-  }
 };
 
 export const checkAdminSession = (req, res) => {
