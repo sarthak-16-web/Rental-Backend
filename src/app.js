@@ -3,7 +3,7 @@ import "./env.js";
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
-import cookieParser from "cookie-parser";       
+import cookieParser from "cookie-parser";
 import adminRoutes from "./routes/adminRoutes.js";
 import propertyRoutes from "./routes/propertyRoutes.js";
 import projectRoutes from "./routes/projectRoutes.js";
@@ -12,6 +12,7 @@ import contactRoutes from "./routes/contactRoutes.js";
 import teamRoutes from "./routes/teamRoutes.js";
 import directorMessageRoutes from "./routes/directorMessageRoutes.js";
 import partnerRoutes from "./routes/partnerRoutes.js";
+import assetRoutes from "./routes/assetRoutes.js";
 
 const app = express();
 
@@ -25,8 +26,10 @@ app.use(
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());                         
-
+app.use(cookieParser());
+// Serves images uploaded through the local-disk fallback (used when
+// Cloudinary env vars aren't configured, e.g. in local dev).
+app.use("/uploads", express.static("uploads"));
 
 app.use("/api/admin", adminRoutes);
 app.use("/api/property", propertyRoutes);
@@ -36,6 +39,7 @@ app.use("/api/contacts", contactRoutes);
 app.use("/api/team", teamRoutes);
 app.use("/api/director-message", directorMessageRoutes);
 app.use("/api/partner", partnerRoutes);
+app.use("/api/asset", assetRoutes);
 
 app.get("/", (req, res) => {
   res.json({ success: true, message: "RentalKing Backend Running 🚀" });
